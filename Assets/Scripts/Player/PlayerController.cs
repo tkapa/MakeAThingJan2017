@@ -8,7 +8,9 @@ public class PlayerController : MonoBehaviour {
 
     public float movementSpeed = 2.0f;
 
-    private bool inBattle = false;
+    public int health = 2;
+
+    private bool inBattle = false, isDefending = false;
     private Enemy opponent;
 
 
@@ -52,8 +54,33 @@ public class PlayerController : MonoBehaviour {
         }
         else if (Input.GetKeyDown(defendKey))
         {
+            isDefending = true;
             print("DEFEND!");
         }
+        else if (Input.GetKeyUp(defendKey))
+        {
+            isDefending = false;
+        }
+    }
+
+    //Takes Damage if the enemy attempts to hit
+    public void TakeDamage(int damage)
+    {
+        if (!isDefending)
+        {
+            print("OOF!");
+            health -= damage;
+            if (health <= 0)
+                OnDeath();
+        } else
+        {
+            print("TING!");
+        }
+    }
+
+    void OnDeath()
+    {
+        print("RIP DIED");
     }
 
     //Function used to declare that the player is in combat
