@@ -16,7 +16,8 @@ public class PlayerController : MonoBehaviour {
     public float parryCooldown = 0.7f;
     private float parryCooldownTimer = 0.0f;
 
-    private bool inBattle = false, isDefending = false, isParrying = false, recentlyParried = false;
+    public bool inBattle = false;
+    private bool isDefending = false, isParrying = false, recentlyParried = false;
     private Enemy opponent;
 
 

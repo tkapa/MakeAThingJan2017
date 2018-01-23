@@ -55,7 +55,7 @@ public class Enemy : MonoBehaviour {
         if (isAttacking)
             Attack();
 
-        if (isDefending)
+        if (isParrying || isDefending)
             Defend();
 	}
 
@@ -126,9 +126,20 @@ public class Enemy : MonoBehaviour {
 
     void Defend()
     {
-        print("Shields up!");
+        print("Shields up! " + isParrying);
 
-        if(isDefending && defendTimer <= 0)
+        if (isParrying && parryTimer <= 0)
+        {
+            print("Enemy Parry Off");
+
+            parryTimer = parryTime;
+            isDefending = true;
+            isParrying = false;
+        }
+        else
+            parryTimer -= Time.deltaTime;
+
+        if (isDefending && defendTimer <= 0)
         {
             defendTimer = defendTime;
             isDefending = false;
@@ -136,16 +147,6 @@ public class Enemy : MonoBehaviour {
         }
         else
         {
-            if(isParrying && parryTimer <= 0)
-            {
-                print("Enemy Parry Off");
-
-                parryTimer = parryTime;
-                isDefending = true;
-                isParrying = false;
-            } else
-                parryTimer -= Time.deltaTime;
-
             defendTimer -= Time.deltaTime;
         }
     }
