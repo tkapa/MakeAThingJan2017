@@ -25,6 +25,7 @@ public class Enemy : MonoBehaviour {
     public float defendTime = 0.5f;
     private float defendTimer = 0.0f;
 
+    private float defendHealth = 0.0f;
     private float timeToAction = 0.0f, actionCoinFlip = 0.0f; 
     private GameManager gameManager;
     private Renderer myRenderer;
@@ -37,6 +38,7 @@ public class Enemy : MonoBehaviour {
         timeToAction = minimumTimeToAttack;
         attackTimer = attackTime;
         defendTimer = defendTime;
+        defendHealth = defendPriorityHealthPercentage * health;
 	}
 	
 	// Update is called once per frame
@@ -76,7 +78,7 @@ public class Enemy : MonoBehaviour {
 
             timeToAction = Random.Range(minimumTimeToAttack, maximumTimeToAttack);
 
-            if(health <= ((float)health * defendPriorityHealthPercentage))
+            if (health <= defendHealth)
             {           
                 actionCoinFlip = Random.Range(0.0f, 1.0f);
                 print("enact action decision: " + actionCoinFlip);
@@ -124,6 +126,7 @@ public class Enemy : MonoBehaviour {
 
         if(defendTimer <= 0)
         {
+            defendTimer = defendTime;
             isDefending = false;
             myRenderer.material.color = Color.white;
         }
