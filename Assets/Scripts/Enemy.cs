@@ -6,6 +6,8 @@ public class Enemy : MonoBehaviour {
 
     public int health = 1;
 
+    public int damage = 1;
+
     [Range(0, 1)]
     public float defendPriorityHealthPercentage = 0.75f;
 
@@ -14,22 +16,39 @@ public class Enemy : MonoBehaviour {
 
     public float minimumTimeToAttack = 2.0f, maximumTimeToAttack = 4.0f;
 
+    [HideInInspector]
     public bool inBattle = false;
+
+    public float attackTime = 1.0f;
+    private float attackTimer = 0.0f;
+
+    public float defendTime = 0.5f;
+    private float defendTimer = 0.0f;
 
     private float timeToAction = 0.0f, actionCoinFlip = 0.0f; 
     private GameManager gameManager;
-    private bool isDefending = false;
+    private Renderer myRenderer;
+    private bool isDefending = false, isAttacking = false;
 
 	// Use this for initialization
 	void Start () {
+        myRenderer = GetComponent<Renderer>();
         gameManager = FindObjectOfType<GameManager>();
         timeToAction = minimumTimeToAttack;
+        attackTimer = attackTime;
+        defendTimer = defendTime;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         if (inBattle)
             ActionDecision();
+
+        if (isAttacking)
+            Attack();
+
+        if (isDefending)
+            Defend();
 	}
 
     //Takes Damage if the player attempts to hit
@@ -51,35 +70,67 @@ public class Enemy : MonoBehaviour {
     //Makes a decision of what action to take
     void ActionDecision()
     {
-        if(timeToAction <= 0)
+        if(timeToAction <= 0 && (!isAttacking || !isDefending))
         {
+            print("Deciding Action!");
+
             timeToAction = Random.Range(minimumTimeToAttack, maximumTimeToAttack);
 
-            if(health <= (health * defendPriorityHealthPercentage))
-            {
-                actionCoinFlip = Random.Range(0, 1);
+            if(health <= ((float)health * defendPriorityHealthPercentage))
+            {           
+                actionCoinFlip = Random.Range(0.0f, 1.0f);
+                print("enact action decision: " + actionCoinFlip);
             }
 
             if (actionCoinFlip > defendPercentage)
             {
-                Defend();
+                print("Chose defend");
+                isDefending = true;
+                myRenderer.material.color = Color.yellow;
             }
             else
             {
-
+                print("Chose attack");
+                isAttacking = true;
+                myRenderer.material.color = Color.red;
             }
-
+        } else if(!isAttacking || !isDefending)
+        {
+            timeToAction -= Time.deltaTime;
         }
     }
 
     void Attack()
     {
-
+        print("Prepping Attack!");
+        
+        if(attackTimer <= 0)
+        {
+            print("I'm Attacking!");
+            attackTimer = attackTime;
+            isAttacking = false;
+            gameManager.player.TakeDamage(1);
+            myRenderer.material.color = Color.white;
+        }
+        else
+        {
+            attackTimer -= Time.deltaTime;
+        }
     }
 
     void Defend()
     {
+        print("Shields up!");
 
+        if(defendTimer <= 0)
+        {
+            isDefending = false;
+            myRenderer.material.color = Color.white;
+        }
+        else
+        {
+            defendTimer -= Time.deltaTime;
+        }
     }
 
     void OnDeath()

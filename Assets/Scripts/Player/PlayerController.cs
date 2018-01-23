@@ -69,7 +69,8 @@ public class PlayerController : MonoBehaviour {
             health -= damage;
             if (health <= 0)
                 OnDeath();
-        }
+        } else
+            print("Catastrophe Avoided!");
     }
 
     void OnDeath()
