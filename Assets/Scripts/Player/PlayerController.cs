@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour {
 
     public float movementSpeed = 2.0f;
 
-    public int health = 2;
+    public int health = 2, damage = 1;
 
     private bool inBattle = false, isDefending = false;
     private Enemy opponent;
@@ -49,13 +49,11 @@ public class PlayerController : MonoBehaviour {
     {
         if (Input.GetKeyDown(attackKey))
         {
-            print("ATTACK!");
-            opponent.TakeDamage(1);
+            opponent.TakeDamage(damage);
         }
         else if (Input.GetKeyDown(defendKey))
         {
             isDefending = true;
-            print("DEFEND!");
         }
         else if (Input.GetKeyUp(defendKey))
         {
@@ -68,13 +66,9 @@ public class PlayerController : MonoBehaviour {
     {
         if (!isDefending)
         {
-            print("OOF!");
             health -= damage;
             if (health <= 0)
                 OnDeath();
-        } else
-        {
-            print("TING!");
         }
     }
 
@@ -95,5 +89,6 @@ public class PlayerController : MonoBehaviour {
         inBattle = false;
         opponent = null;
         print("I WON!");
+        //Add points here?
     }
 }

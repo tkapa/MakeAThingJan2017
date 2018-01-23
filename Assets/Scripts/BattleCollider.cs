@@ -11,6 +11,7 @@ public class BattleCollider : MonoBehaviour {
             print("Battle Initiated!");
 
             other.gameObject.GetComponent<PlayerController>().EnterBattle(GetComponentInParent<Enemy>());
+            GetComponentInParent<Enemy>().inBattle = true;
             //Insert Camera Zoom Function Here, Cue music
         }
     }
