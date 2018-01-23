@@ -241,6 +241,8 @@ MonoBehaviour:
   movementSpeed: 2
   health: 2
   damage: 1
+  parryTime: 0.9
+  parryCooldown: 0.2
 --- !u!54 &374026594
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -829,7 +831,7 @@ MonoBehaviour:
   health: 10
   damage: 1
   defendPriorityHealthPercentage: 0.5
-  defendPercentage: 0.2
+  defendPercentage: 0.8
   minimumTimeToAttack: 2
   maximumTimeToAttack: 4
   inBattle: 0

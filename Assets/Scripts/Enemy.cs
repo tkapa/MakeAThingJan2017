@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour {
 
-    public int health = 1;
+    public float health = 1;
 
-    public int damage = 1;
+    public float damage = 1;
 
     [Range(0, 1)]
     public float defendPriorityHealthPercentage = 0.75f;
@@ -54,7 +54,7 @@ public class Enemy : MonoBehaviour {
 	}
 
     //Takes Damage if the player attempts to hit
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         if (!isDefending)
         {

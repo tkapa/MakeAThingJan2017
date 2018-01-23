@@ -8,17 +8,22 @@ public class PlayerController : MonoBehaviour {
 
     public float movementSpeed = 2.0f;
 
-    public int health = 2, damage = 1;
+    public float health = 2, damage = 1;
 
     public float parryTime = 0.9f;
     private float parryTimer = 0.0f;
-    private bool inBattle = false, isDefending = false, isParrying = false;
+
+    public float parryCooldown = 0.7f;
+    private float parryCooldownTimer = 0.0f;
+
+    private bool inBattle = false, isDefending = false, isParrying = false, recentlyParried = false;
     private Enemy opponent;
 
 
 	// Use this for initialization
 	void Start () {
         parryTimer = parryTime;
+        parryCooldownTimer = parryCooldown;
 	}
 
     private void FixedUpdate()
@@ -32,10 +37,21 @@ public class PlayerController : MonoBehaviour {
         if (inBattle)
             Combat();
 
+        if(recentlyParried && parryCooldownTimer <= 0)
+        {
+            recentlyParried = false;
+            parryCooldownTimer = parryCooldown;
+        }
+        else
+        {
+            parryCooldownTimer -= Time.deltaTime;
+        }
+
         if(isParrying && parryTimer <= 0)
         {
             print("No More Parry");
             parryTimer = parryTime;
+            recentlyParried = true;
             isParrying = false;
             isDefending = true;
         }else
@@ -66,26 +82,43 @@ public class PlayerController : MonoBehaviour {
         }
         else if (Input.GetKeyDown(defendKey))
         {
-            print("Attempting Parry");
-            isParrying = true;
-            parryTimer = parryTime;
+            if (!recentlyParried)
+            {
+                print("Attempting Parry");
+                isParrying = true;
+                parryTimer = parryTime;
+            }
+            else
+            {
+                isDefending = true;
+            } 
         }
         else if (Input.GetKeyUp(defendKey))
         {
             if (isParrying)
+            {
+                recentlyParried = true;
                 isParrying = false;
+            }
             isDefending = false;
         }
     }
 
     //Takes Damage if the enemy attempts to hit
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         if (isParrying)
         {
             print("Boom Parry");
             opponent.TakeDamage(damage * 2);
-        } else if (!isDefending)
+        } else if (isDefending)
+        {
+            print("defending damage");
+            health -= damage * 0.5f;
+            if (health <= 0)
+                OnDeath();
+        }
+        else
         {
             health -= damage;
             if (health <= 0)
