@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour {
     [Range(0, 1)]
     public float defendPercentage = 0.5f;
 
-    public float minimumTimeToAttack = 2.0f, maximumTimeToAttack = 4.0f;
+    public float minimumTimeToAction= 2.0f, maximumTimeToAction = 4.0f;
 
     [HideInInspector]
     public bool inBattle = false;
@@ -25,20 +25,26 @@ public class Enemy : MonoBehaviour {
     public float defendTime = 0.5f;
     private float defendTimer = 0.0f;
 
-    private float defendHealth = 0.0f;
+    public bool canParry = false;
+
+    public float parryTime = 0.2f;
+
+
+    private float defendHealth = 0.0f, parryTimer = 0.0f;
     private float timeToAction = 0.0f, actionCoinFlip = 0.0f; 
     private GameManager gameManager;
     private Renderer myRenderer;
-    private bool isDefending = false, isAttacking = false;
+    private bool isDefending = false, isAttacking = false, isParrying = false;
 
 	// Use this for initialization
 	void Start () {
         myRenderer = GetComponent<Renderer>();
         gameManager = FindObjectOfType<GameManager>();
-        timeToAction = minimumTimeToAttack;
+        timeToAction = minimumTimeToAction;
         attackTimer = attackTime;
         defendTimer = defendTime;
         defendHealth = defendPriorityHealthPercentage * health;
+        parryTimer = parryTime;
 	}
 	
 	// Update is called once per frame
@@ -56,16 +62,17 @@ public class Enemy : MonoBehaviour {
     //Takes Damage if the player attempts to hit
     public void TakeDamage(float damage)
     {
-        if (!isDefending)
+        if (isParrying)
+        {
+            print("Enemy Boom Parry");
+            gameManager.player.TakeDamage(damage * 2);
+        }
+        else if (!isDefending)
         {
             print("Enemy OOF!");
             health -= damage;
             if (health <= 0)
                 OnDeath();
-        }
-        else
-        {
-            print("Enemy TING!");
         }
     }
 
@@ -74,20 +81,17 @@ public class Enemy : MonoBehaviour {
     {
         if(timeToAction <= 0 && (!isAttacking || !isDefending))
         {
-            print("Deciding Action!");
-
-            timeToAction = Random.Range(minimumTimeToAttack, maximumTimeToAttack);
+            timeToAction = Random.Range(minimumTimeToAction, maximumTimeToAction);
 
             if (health <= defendHealth)
             {           
                 actionCoinFlip = Random.Range(0.0f, 1.0f);
-                print("enact action decision: " + actionCoinFlip);
             }
 
             if (actionCoinFlip > defendPercentage)
             {
                 print("Chose defend");
-                isDefending = true;
+                isParrying = true;
                 myRenderer.material.color = Color.yellow;
             }
             else
@@ -124,7 +128,7 @@ public class Enemy : MonoBehaviour {
     {
         print("Shields up!");
 
-        if(defendTimer <= 0)
+        if(isDefending && defendTimer <= 0)
         {
             defendTimer = defendTime;
             isDefending = false;
@@ -132,6 +136,16 @@ public class Enemy : MonoBehaviour {
         }
         else
         {
+            if(isParrying && parryTimer <= 0)
+            {
+                print("Enemy Parry Off");
+
+                parryTimer = parryTime;
+                isDefending = true;
+                isParrying = false;
+            } else
+                parryTimer -= Time.deltaTime;
+
             defendTimer -= Time.deltaTime;
         }
     }

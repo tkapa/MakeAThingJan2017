@@ -49,7 +49,6 @@ public class PlayerController : MonoBehaviour {
 
         if(isParrying && parryTimer <= 0)
         {
-            print("No More Parry");
             parryTimer = parryTime;
             recentlyParried = true;
             isParrying = false;
@@ -84,7 +83,6 @@ public class PlayerController : MonoBehaviour {
         {
             if (!recentlyParried)
             {
-                print("Attempting Parry");
                 isParrying = true;
                 parryTimer = parryTime;
             }
@@ -109,11 +107,9 @@ public class PlayerController : MonoBehaviour {
     {
         if (isParrying)
         {
-            print("Boom Parry");
             opponent.TakeDamage(damage * 2);
         } else if (isDefending)
         {
-            print("defending damage");
             health -= damage * 0.5f;
             if (health <= 0)
                 OnDeath();
