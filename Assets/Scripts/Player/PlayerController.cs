@@ -10,13 +10,15 @@ public class PlayerController : MonoBehaviour {
 
     public int health = 2, damage = 1;
 
-    private bool inBattle = false, isDefending = false;
+    public float parryTime = 0.9f;
+    private float parryTimer = 0.0f;
+    private bool inBattle = false, isDefending = false, isParrying = false;
     private Enemy opponent;
 
 
 	// Use this for initialization
 	void Start () {
-		
+        parryTimer = parryTime;
 	}
 
     private void FixedUpdate()
@@ -29,6 +31,17 @@ public class PlayerController : MonoBehaviour {
     void Update () {
         if (inBattle)
             Combat();
+
+        if(isParrying && parryTimer <= 0)
+        {
+            print("No More Parry");
+            parryTimer = parryTime;
+            isParrying = false;
+            isDefending = true;
+        }else
+        {
+            parryTimer -= Time.deltaTime;
+        }
 	}
 
     //Take care of moving across the overworld
@@ -53,10 +66,14 @@ public class PlayerController : MonoBehaviour {
         }
         else if (Input.GetKeyDown(defendKey))
         {
-            isDefending = true;
+            print("Attempting Parry");
+            isParrying = true;
+            parryTimer = parryTime;
         }
         else if (Input.GetKeyUp(defendKey))
         {
+            if (isParrying)
+                isParrying = false;
             isDefending = false;
         }
     }
@@ -64,13 +81,16 @@ public class PlayerController : MonoBehaviour {
     //Takes Damage if the enemy attempts to hit
     public void TakeDamage(int damage)
     {
-        if (!isDefending)
+        if (isParrying)
+        {
+            print("Boom Parry");
+            opponent.TakeDamage(damage * 2);
+        } else if (!isDefending)
         {
             health -= damage;
             if (health <= 0)
                 OnDeath();
-        } else
-            print("Catastrophe Avoided!");
+        }
     }
 
     void OnDeath()
