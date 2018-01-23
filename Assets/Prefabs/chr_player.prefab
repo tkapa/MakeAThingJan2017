@@ -157,5 +157,5 @@ MonoBehaviour:
   movementSpeed: 2
   health: 1
   damage: 1
-  parryTime: 0.1
+  parryTime: 0.3
   parryCooldown: 0.2
