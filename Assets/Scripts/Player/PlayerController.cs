@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour {
 
     public float movementSpeed = 2.0f;
 
-    public float health = 2, damage = 1;
+    public float health = 2, damage = 1, parryMultiplier = 2;
 
     public float parryTime = 0.9f;
     private float parryTimer = 0.0f;
@@ -19,17 +19,18 @@ public class PlayerController : MonoBehaviour {
     public bool inBattle = false;
     private bool isDefending = false, isParrying = false, recentlyParried = false;
     private Enemy opponent;
-
+    private GameManager gameManager;
 
 	// Use this for initialization
 	void Start () {
+        gameManager = FindObjectOfType<GameManager>();
         parryTimer = parryTime;
         parryCooldownTimer = parryCooldown;
 	}
 
     private void FixedUpdate()
     {
-        if (!inBattle)
+        if (!inBattle && gameManager.inGame)
             Movement();
     }
 
@@ -108,7 +109,7 @@ public class PlayerController : MonoBehaviour {
     {
         if (isParrying)
         {
-            opponent.TakeDamage(damage * 2);
+            opponent.TakeDamage(damage * parryMultiplier);
         } else if (isDefending)
         {
             health -= damage * 0.5f;
@@ -141,5 +142,31 @@ public class PlayerController : MonoBehaviour {
         opponent = null;
         print("I WON!");
         //Add points here?
+    }
+
+    public void Upgrade(PowerUp.PowerUpTypes typeOfPowerUp)
+    {
+        print("Upgrade, Sweet!");
+
+        switch (typeOfPowerUp)
+        {
+            case PowerUp.PowerUpTypes.eput_HealthUp:
+                {
+                    health += 0.5f;
+                }
+                break;
+
+            case PowerUp.PowerUpTypes.eput_SwordUp:
+                {
+                    damage += 0.5f;
+                }
+                break;
+
+            case PowerUp.PowerUpTypes.eput_ParryUp:
+                {
+                    parryMultiplier += 0.5f;
+                }
+                break;
+        }
     }
 }

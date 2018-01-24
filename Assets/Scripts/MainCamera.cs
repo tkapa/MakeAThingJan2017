@@ -45,7 +45,6 @@ public class MainCamera : MonoBehaviour {
 
     void PanCamera()
     {
-        print("plz");
         if (Vector3.Distance(transform.position, playerPan.position) <= 5)
             destination = endGamePan;
         else if (Vector3.Distance(transform.position, endGamePan.position) <= 5)

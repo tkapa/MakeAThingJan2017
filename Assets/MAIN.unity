@@ -959,6 +959,16 @@ Prefab:
       propertyPath: m_LocalScale.x
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 114175562298850966, guid: 0a08600f3d996e04894debbd57c3c93d,
+        type: 2}
+      propertyPath: parryTime
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114175562298850966, guid: 0a08600f3d996e04894debbd57c3c93d,
+        type: 2}
+      propertyPath: defendTime
+      value: 0.2
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 23288429370798088, guid: 0a08600f3d996e04894debbd57c3c93d, type: 2}
     - {fileID: 65015640478970432, guid: 0a08600f3d996e04894debbd57c3c93d, type: 2}
@@ -1015,12 +1025,12 @@ Prefab:
     - target: {fileID: 114583289125727258, guid: 1c3beba3337d4d24e85955971f335b47,
         type: 2}
       propertyPath: parryTime
-      value: 0.5
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 114583289125727258, guid: 1c3beba3337d4d24e85955971f335b47,
         type: 2}
       propertyPath: defendTime
-      value: 0.7
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 114583289125727258, guid: 1c3beba3337d4d24e85955971f335b47,
         type: 2}
@@ -1191,6 +1201,16 @@ Prefab:
     - target: {fileID: 4010353105821084, guid: 99016c1d3090684439bee5d2e854b1be, type: 2}
       propertyPath: m_LocalEulerAnglesHint.y
       value: -180
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832051922496006, guid: 99016c1d3090684439bee5d2e854b1be,
+        type: 2}
+      propertyPath: damage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114832051922496006, guid: 99016c1d3090684439bee5d2e854b1be,
+        type: 2}
+      propertyPath: parryMultiplier
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 65156678439303382, guid: 99016c1d3090684439bee5d2e854b1be, type: 2}
