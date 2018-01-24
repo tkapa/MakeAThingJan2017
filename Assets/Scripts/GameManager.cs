@@ -4,33 +4,20 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 
-    //private static GameManager inst;
-    //public static GameManager instance
-    //{
-    //    get
-    //    {
-    //        if (inst == null)
-    //        {
-    //            var newGameManager = new GameObject("GameManager");
-    //            inst = newGameManager.AddComponent<GameManager>();
-    //        }
-
-    //        return inst;
-    //    }
-    //}
+    public bool inGame = false;
 
     public PlayerController player;
 
     // Use this for initialization
     void Start () {
-		
+        player = FindObjectOfType<PlayerController>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown("k"))
+        if(!inGame && (Input.GetKey(player.attackKey) && Input.GetKey(player.defendKey)))
         {
-            player.TakeDamage(1);
+            inGame = true;
         }
 	}
 }
