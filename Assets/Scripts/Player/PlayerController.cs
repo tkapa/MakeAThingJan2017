@@ -16,11 +16,14 @@ public class PlayerController : MonoBehaviour {
     public float parryCooldown = 0.7f;
     private float parryCooldownTimer = 0.0f;
 
+    public float attackCooldown = 0.5f;
+    private float attackCooldownTimer = 0.0f;
+
     public bool inBattle = false;
 
-    public AudioClip powerUpClip;
+    public AudioClip powerUpClip, damageClip, parryClip, hitClip, defendClip, deathClip;
 
-    private bool isDefending = false, isParrying = false, recentlyParried = false;
+    private bool isDefending = false, isParrying = false, recentlyParried = false, recentlyAttacked = false;
     private Enemy opponent;
     private GameManager gameManager;
 
@@ -29,6 +32,7 @@ public class PlayerController : MonoBehaviour {
         gameManager = FindObjectOfType<GameManager>();
         parryTimer = parryTime;
         parryCooldownTimer = parryCooldown;
+        attackCooldownTimer = attackCooldown;
 	}
 
     private void FixedUpdate()
@@ -42,12 +46,22 @@ public class PlayerController : MonoBehaviour {
         if (inBattle)
             Combat();
 
+        if(recentlyAttacked && attackCooldownTimer <= 0)
+        {
+            attackCooldownTimer = attackCooldown;
+            recentlyAttacked = false;
+        }
+        else if(recentlyAttacked)
+        {
+            attackCooldownTimer -= Time.deltaTime;
+        }
+
         if(recentlyParried && parryCooldownTimer <= 0)
         {
             recentlyParried = false;
             parryCooldownTimer = parryCooldown;
         }
-        else
+        else if (recentlyParried)
         {
             parryCooldownTimer -= Time.deltaTime;
         }
@@ -58,7 +72,8 @@ public class PlayerController : MonoBehaviour {
             recentlyParried = true;
             isParrying = false;
             isDefending = true;
-        }else
+        }
+        else if (isParrying)
         {
             parryTimer -= Time.deltaTime;
         }
@@ -80,9 +95,10 @@ public class PlayerController : MonoBehaviour {
     //Use the same keys to attack and defend
     void Combat()
     {
-        if (Input.GetKeyDown(attackKey))
+        if (Input.GetKeyDown(attackKey) && !recentlyAttacked)
         {
             opponent.TakeDamage(damage);
+            recentlyAttacked = true;
         }
         else if (Input.GetKeyDown(defendKey))
         {
@@ -113,23 +129,27 @@ public class PlayerController : MonoBehaviour {
         if (isParrying)
         {
             opponent.TakeDamage(damage * parryMultiplier);
+            AudioManager.instance.PlaySFX(parryClip);
         } else if (isDefending)
         {
             health -= damage * 0.5f;
             if (health <= 0)
                 OnDeath();
+            AudioManager.instance.PlaySFX(defendClip);
         }
         else
         {
             health -= damage;
             if (health <= 0)
                 OnDeath();
+            AudioManager.instance.PlaySFX(hitClip);
         }
     }
 
     void OnDeath()
     {
         print("RIP DIED");
+        AudioManager.instance.PlaySFX(deathClip);
     }
 
     //Function used to declare that the player is in combat

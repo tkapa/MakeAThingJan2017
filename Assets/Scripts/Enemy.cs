@@ -29,6 +29,7 @@ public class Enemy : MonoBehaviour {
 
     public float parryTime = 0.2f;
 
+    public AudioClip hitClip, parryClip, defendClip, deathClip;
 
     private float defendHealth = 0.0f, parryTimer = 0.0f;
     private float timeToAction = 0.0f, actionCoinFlip = 0.0f; 
@@ -64,16 +65,20 @@ public class Enemy : MonoBehaviour {
     {
         if (isParrying)
         {
+            AudioManager.instance.PlaySFX(parryClip);
             print("Enemy Boom Parry");
             gameManager.player.TakeDamage(damage * 2);
         }
         else if (!isDefending)
         {
+            AudioManager.instance.PlaySFX(hitClip);
             print("Enemy OOF!");
             health -= damage;
             if (health <= 0)
                 OnDeath();
         }
+        else
+            AudioManager.instance.PlaySFX(defendClip);
     }
 
     //Makes a decision of what action to take
@@ -153,6 +158,7 @@ public class Enemy : MonoBehaviour {
 
     void OnDeath()
     {
+        AudioManager.instance.PlaySFX(deathClip);
         print(gameObject.name + " has died, progress!");
         gameManager.player.ExitBattle();
         Destroy(gameObject);

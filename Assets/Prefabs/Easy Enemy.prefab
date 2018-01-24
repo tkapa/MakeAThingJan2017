@@ -20,9 +20,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4414725672608580}
   - component: {fileID: 33068604032811992}
-  - component: {fileID: 65280427341410912}
-  - component: {fileID: 23302890293989280}
   - component: {fileID: 114026058590730252}
+  - component: {fileID: 61434394385227404}
   m_Layer: 0
   m_Name: BattleTrigger
   m_TagString: Untagged
@@ -57,7 +56,7 @@ Transform:
   m_GameObject: {fileID: 1185886892895518}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 2}
+  m_LocalScale: {x: 2, y: 1.5, z: 2}
   m_Children: []
   m_Father: {fileID: 4518816929216290}
   m_RootOrder: 0
@@ -76,40 +75,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!23 &23302890293989280
-MeshRenderer:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1185886892895518}
-  m_Enabled: 0
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 0
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
 --- !u!23 &23498040270539966
 MeshRenderer:
   m_ObjectHideFlags: 1
@@ -158,6 +123,31 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1643697270548822}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!61 &61434394385227404
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1185886892895518}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!65 &65164862128933008
 BoxCollider:
   m_ObjectHideFlags: 1
@@ -166,18 +156,6 @@ BoxCollider:
   m_GameObject: {fileID: 1643697270548822}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!65 &65280427341410912
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1185886892895518}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -206,7 +184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 3
   damage: 1
-  defendPriorityHealthPercentage: 0
+  defendPriorityHealthPercentage: 0.5
   defendPercentage: 0.5
   minimumTimeToAction: 2
   maximumTimeToAction: 4
@@ -215,3 +193,7 @@ MonoBehaviour:
   defendTime: 0.5
   canParry: 0
   parryTime: 0.2
+  hitClip: {fileID: 8300000, guid: 9ea7bc67ec7bac74696a1898de0fff1b, type: 3}
+  parryClip: {fileID: 8300000, guid: a2449851892840345bddc89493313ca1, type: 3}
+  defendClip: {fileID: 8300000, guid: f5137bc54612bf142b777c6d0aa603b9, type: 3}
+  deathClip: {fileID: 8300000, guid: 9bb99fcd96061664fb60a9fa4f76e469, type: 3}

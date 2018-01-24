@@ -346,5 +346,11 @@ MonoBehaviour:
   parryMultiplier: 2
   parryTime: 0.3
   parryCooldown: 0.2
+  attackCooldown: 0.75
   inBattle: 0
   powerUpClip: {fileID: 8300000, guid: 13412757ef75e904584e6cf890868006, type: 3}
+  damageClip: {fileID: 8300000, guid: 52dbb8a9ed676524b82a9b7420cc7ded, type: 3}
+  parryClip: {fileID: 8300000, guid: 437e2bbb5e1c5644e876f713588a5a3b, type: 3}
+  hitClip: {fileID: 8300000, guid: 9e80e850ab0a00b44ab88db9248db8c9, type: 3}
+  defendClip: {fileID: 8300000, guid: 6a75515aa866aa64fbf9ac47d9b0269a, type: 3}
+  deathClip: {fileID: 8300000, guid: 7b6e9c2c1baa45246886c4b3a49f2e24, type: 3}
