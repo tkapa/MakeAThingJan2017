@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour {
     private float parryCooldownTimer = 0.0f;
 
     public bool inBattle = false;
+
+    public AudioClip powerUpClip;
+
     private bool isDefending = false, isParrying = false, recentlyParried = false;
     private Enemy opponent;
     private GameManager gameManager;
@@ -168,5 +171,7 @@ public class PlayerController : MonoBehaviour {
                 }
                 break;
         }
+
+        AudioManager.instance.PlaySFX(powerUpClip);
     }
 }
